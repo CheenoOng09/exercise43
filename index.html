@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planet Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .planet-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .planet-card {
+            width: 200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .planet-image {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body onload="fetchPlanetData()">
+    <h1>Planet Information</h1>
+    <div id="planets" class="planet-container"></div>
+
+    <script>
+        function fetchPlanetData() {
+            fetch('https://handlers.education.launchcode.org/static/planets.json')
+                .then(response => response.json())
+                .then(data => displayPlanets(data))
+                .catch(error => console.error('Error fetching planet data:', error));
+        }
+
+        function displayPlanets(planets) {
+            const planetsContainer = document.getElementById('planets');
+
+            planets.forEach(planet => {
+                const planetCard = document.createElement('div');
+                planetCard.classList.add('planet-card');
+
+                const planetName = document.createElement('h2');
+                planetName.textContent = planet.name;
+
+                const planetImage = document.createElement('img');
+                planetImage.classList.add('planet-image');
+                planetImage.src = planet.image || 'https://via.placeholder.com/150'; // Use a placeholder if image is broken
+                planetImage.alt = planet.name;
+
+                const planetInfo = document.createElement('p');
+                planetInfo.textContent = `Distance from Sun: ${planet.distance} million km`;
+
+                planetCard.appendChild(planetName);
+                planetCard.appendChild(planetImage);
+                planetCard.appendChild(planetInfo);
+
+                planetsContainer.appendChild(planetCard);
+            });
+        }
+    </script>
+</body>
+
+</html>
